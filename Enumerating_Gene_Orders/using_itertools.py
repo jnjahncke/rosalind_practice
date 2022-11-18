@@ -2,8 +2,9 @@
 
 import itertools as it
 from math import factorial
+import sys
 
-n = 3
+n = int(sys.argv[1]) 
 
 possible = factorial(n)
 print(possible)
