@@ -26,6 +26,7 @@ while len(permutations) < possible:
             x = temp[randrange(len(temp))]
         temp.remove(x)
         perm.append(x)
+    # print to standard out
     if perm not in permutations:
         permutations.append(perm)
         print(*perm, sep = " ")
