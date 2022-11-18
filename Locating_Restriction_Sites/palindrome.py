@@ -19,8 +19,14 @@ with open(inputfile,"r") as inputfile:
             sequence += line
 
 # scan through sequence looking for reverse palindromes
+palindromes = []
 for j in range(4,13):
     for found in re.finditer(r"(?=([ATCG]{" + str(j) + r"}))", sequence):
         s = found.group(1)
         if reverse_complement(s) == s:
-            print(f"{found.start(1)+1} {len(s)}")
+            palindromes.append((found.start(1)+1, len(s))) # location, length
+
+# sort by location and print to standard out
+palindromes = sorted(palindromes)
+for item in palindromes:
+    print(item[0],item[1])
