@@ -1,6 +1,26 @@
 #!/usr/bin/env python
 
 import sys
+from itertools import product
+
+def inc_dec(perm):
+    status_inc = []
+    status_dec = []
+    for i in range(len(perm)-1):
+        if perm[i] > perm[i+1]:
+            status_dec.append(True)
+            status_inc.append(False)
+        elif perm[i] < perm[i+1]:
+            status_dec.append(False)
+            status_inc.append(True)
+        elif perm[i] == perm[i+1]:
+            status_dec.append(False)
+            status_inc.append(False)
+    if False not in status_inc:
+        return("Increasing")
+    elif False not in status_dec:
+        return("Decreasing")
+
 
 inputfile = sys.argv[1]
 
@@ -8,36 +28,20 @@ with open(inputfile,"r") as raw:
     n = int(raw.readline())
     perm = raw.readline().split()
 
-# find all increasing and decreasing subsequences
 increasing = []
 decreasing = []
-for i in range(n):
-    current_inc = [perm[i]]
-    current_dec = [perm[i]]
-    for j in range(i,n):
-        sub = perm[j:]
-        if len(sub) > 0 and perm[j] == min(sub) and perm[j] > current_inc[-1]:
-            current_inc.append(perm[j])
-        if len(sub) > 0 and perm[j] == max(sub) and perm[j] < current_dec[-1]:
-            current_dec.append(perm[j])
-    increasing.append(current_inc)
-    decreasing.append(current_dec)
+for i in range(1,n):
+    for p in product(perm, repeat = i):
+        # if all decreasing
+        p_sort = sorted(p, key = lambda x: perm.index(x))
+        if inc_dec(p_sort) == "Decreasing":
+            decreasing.append(p_sort)
+        # if all increasing
+        elif inc_dec(p_sort) == "Increasing":
+            increasing.append(p_sort)
 
 max_inc = max(increasing, key = len)
-max_dec = max(decreasing, key = len)
-
-# check last digit increasing
-max_inc = max_inc[:-1]
-pos = perm.index(max_inc[-1])
-for i in range(pos,n):
-    if perm[i] > max_inc[-1]:
-        max_inc.append(perm[i])
 print(*max_inc, sep = " ")
 
-# check last digit decreasing
-max_dec = max_dec[:-1]
-pos = perm.index(max_dec[-1])
-for i in range(pos,n):
-    if perm[i] < max_dec[-1]:
-        max_dec.append(perm[i])
+max_dec = max(decreasing, key = len)
 print(*max_dec, sep = " ")
