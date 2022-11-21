@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from itertools import product
+from itertools import combinations
 
 def inc_dec(perm):
     status_inc = []
@@ -28,17 +28,17 @@ with open(inputfile,"r") as raw:
     n = int(raw.readline())
     perm = raw.readline().split()
 
+
 increasing = []
 decreasing = []
 for i in range(1,n):
-    for p in product(perm, repeat = i):
+    for c in combinations(perm, i):
         # if all decreasing
-        p_sort = sorted(p, key = lambda x: perm.index(x))
-        if inc_dec(p_sort) == "Decreasing":
-            decreasing.append(p_sort)
+        if inc_dec(c) == "Decreasing":
+            decreasing.append(c)
         # if all increasing
-        elif inc_dec(p_sort) == "Increasing":
-            increasing.append(p_sort)
+        elif inc_dec(c) == "Increasing":
+            increasing.append(c)
 
 max_inc = max(increasing, key = len)
 print(*max_inc, sep = " ")
