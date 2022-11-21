@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from itertools import combinations, takewhile
+from itertools import combinations
 
 def inc_dec(perm):
     status_inc = []
