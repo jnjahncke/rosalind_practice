@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import sys
-from random import randrange
 from copy import deepcopy
 
 inputfile = sys.argv[1]
@@ -11,8 +10,6 @@ with open(inputfile,"r") as raw:
 
 alphabet = alphabet.rstrip().split()
 n = int(n)
-
-possible = len(alphabet)**n
 
 strings = []
 for i in range(len(alphabet)):
