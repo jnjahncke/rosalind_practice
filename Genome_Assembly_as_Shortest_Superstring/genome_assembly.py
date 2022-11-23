@@ -2,7 +2,6 @@
 
 import sys
 import re
-from itertools import combinations
 
 inputfile = sys.argv[1]
 
@@ -27,7 +26,6 @@ def find_overlap(seq1,seq2):
         return(seq1, seq2, seq21)
     else:
         return(False)
-    
 
 def combine_seqs(first, second, overlap):
     first_loc = first.find(overlap)
@@ -37,12 +35,14 @@ def combine_seqs(first, second, overlap):
 
 def find_combos(seq_list):
     combos = []
-    for combo in combinations(seq_list,2):
-        test = find_overlap(combo[0],combo[1])
-        print(test)
-        if bool(test) != False:
-            first, second, overlap = test
-            combos.append(combine_seqs(first, second, overlap))
+    for i in seq_list:
+        for j in seq_list:
+            if i != j and j not in seq_list[:seq_list.index(i)]:
+                test = find_overlap(i,j)
+                if bool(test) != False:
+                    first, second, overlap = test
+                    combos.append(combine_seqs(first, second, overlap))
+                    break
     return(combos)
 
 # import subsequences
@@ -59,7 +59,6 @@ seqs = list(sequences.values())
 
 # join subsequences into supersequence
 combos = find_combos(seqs)
-print(combos)
 while len(combos) > 1:
     combos = find_combos(combos)
 print(combos[0])
