@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import sys
-from copy import deepcopy
 import re
+from itertools import combinations
 
 inputfile = sys.argv[1]
 
@@ -13,7 +13,7 @@ def find_overlap(seq1,seq2):
     # does the start of seq2 = end of seq1?
     seq12 = ""
     seq21 = ""
-    for i in range(length//2,length):
+    for i in range(length):
         if bool(re.findall(seq1[:i] + r"$", seq2)):
             seq12 = seq1[:i]
         if bool(re.findall(seq2[:i] + r"$", seq1)):
@@ -35,18 +35,14 @@ def combine_seqs(first, second, overlap):
     combined = first + second
     return(combined)
 
-
 def find_combos(seq_list):
     combos = []
-    for i in seq_list:
-        for j in seq_list:
-            if i != j:
-                test = find_overlap(i,j)
-                print(test)
-                if bool(test) != False:
-                    first, second, overlap = test
-                    combos.append(combine_seqs(first, second, overlap))
-                    combos = list(set(combos))
+    for combo in combinations(seq_list,2):
+        test = find_overlap(combo[0],combo[1])
+        print(test)
+        if bool(test) != False:
+            first, second, overlap = test
+            combos.append(combine_seqs(first, second, overlap))
     return(combos)
 
 # import subsequences
@@ -64,7 +60,6 @@ seqs = list(sequences.values())
 # join subsequences into supersequence
 combos = find_combos(seqs)
 print(combos)
-exit()
 while len(combos) > 1:
     combos = find_combos(combos)
 print(combos[0])
