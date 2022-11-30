@@ -6,10 +6,8 @@ from itertools import permutations
 with open(sys.argv[1],"r") as data:
     n = int(data.readline())
 
-# make list
-pos = [x for x in range(1,n+1)]
-neg = [x * -1 for x in range(1,n+1)]
-nums = pos + neg
+# make list of numbers to pull from
+nums = [x for x in range(-n,n+1) if x != 0]
 
 # make list of permutations
 perms = []
@@ -19,6 +17,9 @@ for x in permutations(nums,n):
     if len(set(temp)) == n:
         perms.append(x)
 
+# print number of permutations
 print(len(perms))
+
+# print all permutations
 for x in perms:
     print(*x, sep = " ")
