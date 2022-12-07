@@ -1,4 +1,4 @@
-Certain Point Mutations are More Commonclick to collapse
+Certain Point Mutations are More Common
 
 Point mutations occurring in DNA can be divided into two types: transitions and transversions. A transition substitutes one purine for another (A↔G) or one pyrimidine for another (C↔T); that is, a transition does not change the structure of the nucleobase. Conversely, a transversion is the interchange of a purine for a pyrimidine base, or vice-versa. See Figure 1. Transitions and transversions can be defined analogously for RNA mutations.
 
