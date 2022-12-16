@@ -2,7 +2,7 @@
 
 import sys
 from itertools import product 
-import re
+from re import finditer
 
 # import sequence
 with open(sys.argv[1],"r") as fasta:
@@ -16,9 +16,8 @@ with open(sys.argv[1],"r") as fasta:
 # make all possible 4-mers
 kmers = ["".join(x) for x in product("ACGT", repeat=4)]
 
-# find meirs, build array
+# find mers, build array
 array = []
 for kmer in kmers:
-    temp = [found.group(1) for found in re.finditer(r"(?=(" + kmer + "))", seq)]
-    array.append(len(temp))
-print(*array, sep = " ")
+    array.append([found.group(1) for found in finditer(r"(?=(" + kmer + "))", seq)])
+print(*[len(x) for x in array], sep = " ")
