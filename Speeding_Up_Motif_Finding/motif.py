@@ -24,13 +24,12 @@ for i in range(1,len(seq)):
     for j in reversed(range(i+1)):
         newseq = seq[:i]
         subseq = seq[i-j:i+1]
-        if len(subseq) < longest:
+        length = len(subseq) 
+        if length < longest:
             break
         elif subseq[0] == seq[0]:
             find = motif(newseq, subseq)
-            if find == True:
-                length = len(subseq) 
-                if length > longest:
-                    longest = length
+            if find == True and length > longest:
+                longest = length
     array.append(longest)
 print(*array, sep = " ")
