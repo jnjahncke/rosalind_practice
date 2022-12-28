@@ -9,6 +9,16 @@ def motif(seq, subseq):
     else:
         return False
 
+def memoize(func):
+    cache = {}
+    def decorated_function(*args):
+        if args not in cache:
+            cache[args] = func(*args)
+        return cache[args]
+    return decorated_function
+
+motif = memoize(motif)
+
 # import sequence
 seq = ""
 with open(sys.argv[1],"r") as fasta:
