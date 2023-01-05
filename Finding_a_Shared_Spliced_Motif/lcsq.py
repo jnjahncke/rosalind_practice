@@ -29,7 +29,7 @@ seq1, seq2 = seq_dict.values()
 # see if they are also subsequences of seq2
 # break at first match
 seq1_sub = []
-for length in range(len(seq1),0,-1):
+for length in range(len(seq1),1,-1):
     for x in ["".join(x) for x in combinations(seq1, length)]:
         if x not in seq1_sub:
             seq1_sub.append(x)
