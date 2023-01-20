@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+from itertools import combinations 
 
 # finding breakpoints
 def breakpoints(k,g):
@@ -21,8 +22,22 @@ def reversal(seq, start, end):
     suffix = seq[end:]
     return(prefix + rev + suffix)
 
-# find minimum number of reversals
-
+# do all possible combinations of reversals
+# return reversal with fewest breakpoints
+def rev_combos(k,seq):
+    bps = breakpoints(k,seq)
+    if len(bps) > 0:
+        combos = combinations(bps,2)
+        seq_list = []
+        bp_list = []
+        for start,stop in combos:
+            rev = reversal(seq,start,stop+1)
+            seq_list.append(rev)
+            bp_list.append(len(breakpoints(k,rev)))
+        min_bp = bp_list.index(min(bp_list))
+        return(seq_list[min_bp])
+    else:
+        return(seq)
 
 # import sequences
 keys = []
@@ -48,4 +63,16 @@ for k,g in perms:
     k.append("b")
     g.insert(0,"a")
     g.append("b")
-    print(breakpoints(k,g))
+    change = 0
+    if k == g:
+        result.append(change)
+    else:
+        rev = rev_combos(k,g)
+        print(rev)
+        change += 1
+        while rev != k:
+            rev = rev_combos(k,rev)
+            print(rev)
+            change += 1
+        result.append(change)
+print(*result)
