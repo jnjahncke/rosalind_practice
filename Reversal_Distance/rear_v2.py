@@ -17,6 +17,7 @@ def breakpoints(k,g):
 
 # perform reversal
 def reversal(seq, start, end):
+    end += 1
     prefix = seq[:start]
     rev = seq[start:end][::-1]
     suffix = seq[end:]
@@ -24,20 +25,29 @@ def reversal(seq, start, end):
 
 # do all possible combinations of reversals
 # return reversal with fewest breakpoints
-def rev_combos(k,seq):
-    bps = breakpoints(k,seq)
-    if len(bps) > 0:
-        combos = combinations(bps,2)
-        seq_list = []
-        bp_list = []
-        for start,stop in combos:
-            rev = reversal(seq,start,stop+1)
-            seq_list.append(rev)
-            bp_list.append(len(breakpoints(k,rev)))
-        min_bp = bp_list.index(min(bp_list))
-        return(seq_list[min_bp])
+def rev_combos(k,seq_list):
+    new_seq_list = []
+    bp_list = []
+    for seq in seq_list:
+        bps = breakpoints(k,seq)
+        if len(bps) > 0:
+            combos = combinations(bps,2)
+            for start,stop in combos:
+                rev = reversal(seq,start,stop)
+                new_seq_list.append(rev)
+                bp_list.append(len(breakpoints(k,rev)))
+                print(f"Key: {k}\nSeq: {seq}\nBPs: {bps}\nStart: {start}\tEnd: {stop}\nRev: {rev}\nNew BPs: {breakpoints(k,rev)}")
+        else:
+            return([seq])
+    print(f"New seq list: {new_seq_list}")
+    print(f"BP list: {bp_list}")
+    if len(bp_list) > 0:
+        min_bp = min(bp_list)
+        w_min_bp = [x for x in new_seq_list if len(breakpoints(k,x)) == min_bp]
     else:
-        return(seq)
+        w_min_bp = new_seq_list
+    print(f"With min bps: {w_min_bp}")
+    return(w_min_bp)
 
 # import sequences
 keys = []
@@ -67,12 +77,11 @@ for k,g in perms:
     if k == g:
         result.append(change)
     else:
-        rev = rev_combos(k,g)
-        print(rev)
+        rev = rev_combos(k,[g])
         change += 1
-        while rev != k:
+        while k not in rev:
             rev = rev_combos(k,rev)
-            print(rev)
             change += 1
+            print(f"Change: {change}")
         result.append(change)
 print(*result)
