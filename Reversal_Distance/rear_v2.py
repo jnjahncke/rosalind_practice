@@ -9,15 +9,14 @@ def breakpoints(k,g):
     l = len(k)-1
     # compare sequences
     for n in range(l):
-        g1 = g.index(k[n])
-        g2 = g.index(k[n+1])
-        if g1+1 != g2:
-            breakpoints.append(g1+1)
+        k1 = k[n]
+        k2 = k[n+1]
+        if abs(g.index(k1) - g.index(k2)) != 1: 
+            breakpoints.append(n+1)
     return(sorted(breakpoints))
 
 # perform reversal
 def reversal(seq, start, end):
-    end += 1
     prefix = seq[:start]
     rev = seq[start:end][::-1]
     suffix = seq[end:]
@@ -74,14 +73,10 @@ for k,g in perms:
     g.insert(0,"a")
     g.append("b")
     change = 0
-    if k == g:
-        result.append(change)
-    else:
-        rev = rev_combos(k,[g])
+    rev = [g]
+    while k not in rev:
+        rev = rev_combos(k,rev)
         change += 1
-        while k not in rev:
-            rev = rev_combos(k,rev)
-            change += 1
-            print(f"Change: {change}")
-        result.append(change)
+        print(f"Change: {change}")
+    result.append(change)
 print(*result)
