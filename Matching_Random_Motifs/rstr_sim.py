@@ -31,4 +31,4 @@ for i in range(int(sys.argv[2])):
     genome = generate_N(N,x,s)
     if s in genome:
         is_in += 1
-print(is_in/1000)
+print(is_in/int(sys.argv[2]))
