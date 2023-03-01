@@ -3,6 +3,13 @@
 import sys
 from itertools import combinations 
 
+# turn list to string
+def l2s(l):
+    s = ""
+    for x in l:
+        s += str(x)
+    return s
+
 # finding breakpoints
 def breakpoints(k,g):
     breakpoints = []
@@ -24,19 +31,27 @@ def reversal(seq, start, end):
 
 # do all possible combinations of reversals
 # return reversal with fewest breakpoints
-def rev_combos(k,seq_list):
-    new_seq_list = []
+def rev_combos(k,seq_dict):
+    new_seq_dict = {}
     bp_list = []
-    for seq in seq_list:
-        bps = breakpoints(k,seq)
+    for seq in seq_dict:
+        seq_dict[seq]["change"] += 1
+        bps = breakpoints(k,seq_dict[seq]["seq"])
         combos = combinations(bps,2)
         for start,stop in combos:
-            rev = reversal(seq,start,stop)
-            new_seq_list.append(rev)
+            rev = reversal(seq_dict[seq]["seq"],start,stop)
+            new_seq_dict[l2s(rev)] = {"seq":rev, "change":seq_dict[seq]["change"], "reversals":seq_dict[seq]["reversals"] + [(start,stop-1)]}
             bp_list.append(len(breakpoints(k,rev)))
     min_bp = min(bp_list)
-    w_min_bp = [x for x in new_seq_list if len(breakpoints(k,x)) == min_bp]
-    return(w_min_bp)
+    
+    seq_dict_out = {}
+    for rev in new_seq_dict:
+        if len(breakpoints(k,new_seq_dict[rev]["seq"])) == min_bp:
+            seq_dict_out[rev] = {"seq":new_seq_dict[rev]["seq"], 
+                    "change":new_seq_dict[rev]["change"], 
+                    "reversals":new_seq_dict[rev]["reversals"]}
+
+    return seq_dict_out
 
 # import sequences
 keys = []
@@ -60,10 +75,14 @@ result = []
 for k,g in perms:
     k = ["a"] + k + ["b"]
     g = ["a"] + g + ["b"]
-    change = 0
-    rev = [g]
-    while k not in rev:
-        rev = rev_combos(k,rev)
-        change += 1
-    result.append(change)
-print(*result)
+
+    seq_dict = {}
+    seq_dict[l2s(g)] = {"seq":g, "change":0, "reversals":[]}
+    while l2s(k) not in seq_dict.keys():
+        seq_dict = rev_combos(k,seq_dict)
+
+for seq in seq_dict:
+    print(seq_dict[seq]["change"])
+    revs = seq_dict[seq]["reversals"]
+    for rev in revs:
+        print(*rev, sep = " ")
