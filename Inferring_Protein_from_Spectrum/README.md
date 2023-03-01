@@ -1,4 +1,4 @@
-# Introduction to Mass Spectrometryclick to collapse
+# Introduction to Mass Spectrometry
 
 In “Calculating Protein Mass”, we briefly mentioned an analytic chemical method called mass spectrometry, which aims to measure the mass-to-charge ratio of a particle or a molecule. In a mass spectrometer, a sample is vaporized (turned into gas), and then particles from the sample are ionized. The resulting ions are placed into an electromagnetic field, which separates them based on their charge and mass. The output of the mass spectrometer is a mass spectrum, or a plot of ions' possible mass-to-charge ratio values with the intensity (actual observed frequency) of ions having these mass-to-charge values.
 
