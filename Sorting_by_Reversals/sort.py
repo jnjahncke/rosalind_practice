@@ -40,7 +40,7 @@ def rev_combos(k,seq_dict):
         combos = combinations(bps,2)
         for start,stop in combos:
             rev = reversal(seq_dict[seq]["seq"],start,stop)
-            new_seq_dict[l2s(rev)] = {"seq":rev, "change":seq_dict[seq]["change"], "reversals":seq_dict[seq]["reversals"] + [(start,stop-1)]}
+            new_seq_dict[l2s(rev)] = {"seq":rev, "change":seq_dict[seq]["change"], "reversals":[(start,stop-1)] + seq_dict[seq]["reversals"]}
             bp_list.append(len(breakpoints(k,rev)))
     min_bp = min(bp_list)
     
