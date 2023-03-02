@@ -44,28 +44,23 @@ def levenshtein_distance(s,t):
         left_top = d[m-1][n-1]
         floor = min(left, top, left_top)
 
-        if d[m][n] == floor:
+        if (floor == d[m][n]) or \
+                (floor == left and floor == top) or \
+                (floor != left and floor != top):
             s_fmt = s[m-1] + s_fmt
             t_fmt = t[n-1] + t_fmt
             m -= 1
             n -= 1
 
-        else:
-            if (floor == left and floor == top) or (floor != left and floor != top):
-                s_fmt = s[m-1] + s_fmt
-                t_fmt = t[n-1] + t_fmt
-                m -= 1
-                n -= 1
+        elif floor != left and floor == top:
+            s_fmt = s[m-1] + s_fmt
+            t_fmt = "-" + t_fmt
+            m -= 1
 
-            elif floor != left and floor == top:
-                s_fmt = s[m-1] + s_fmt
-                t_fmt = "-" + t_fmt
-                m -= 1
-
-            elif floor == left and floor != top:
-                s_fmt = "-" + s_fmt
-                t_fmt = t[n-1] + t_fmt
-                n -= 1
+        elif floor == left and floor != top:
+            s_fmt = "-" + s_fmt
+            t_fmt = t[n-1] + t_fmt
+            n -= 1
 
 #    print(*d,sep="\n")
     return(change, s_fmt, t_fmt)
