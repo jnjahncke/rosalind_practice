@@ -1,10 +1,5 @@
 #!/usr/bin/env python
 
-# I fully recognize that this is FLAWED
-# it will only work if the smallest ion 
-#   is in fact the first b-ion (not the last y-ion)
-# Among other assumptions :)
-
 import sys
 
 def lookup(weight):
@@ -38,8 +33,8 @@ while len(peptide) < n:
     attempt = lookup(spec[1]-spec[0])
     if attempt != False:
         peptide += attempt
-        spec.remove(spec[0])
+        spec.pop(0)
     else:
-        spec.remove(spec[1])
+        spec.pop(1)
 
 print(peptide)
