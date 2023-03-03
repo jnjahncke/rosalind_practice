@@ -27,9 +27,8 @@ with open(sys.argv[1],"r") as i:
     for line in i:
         line = float(line.rstrip())
         spec.append(line)
-parent = spec[0]
-n = int((len(spec)-3)/2)
-spec.pop(0)
+parent = spec.pop(0)
+n = int((len(spec)-2)/2)
 
 # determine peptide sequence
 spec = sorted(spec)
