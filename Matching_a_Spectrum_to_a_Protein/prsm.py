@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import sys
-from itertools import combinations
 
 # parse mass table
 AAs = {}
@@ -36,32 +35,33 @@ for p in peptides:
         if y_mass > 0:
             ion_dict[p].append(round(y_mass,5))
 
-# find all possible differences between ions in spectrum
-diff = []
-for i,j in combinations(spec,2):
-    diff.append(round(abs(i-j),5))
-spec += diff
-
-# find all possible differences between ions in peptides
-#temp = []
-#for p in peptides:
-#    for i,j in combinations(ion_dict[p],2):
-#        temp.append(round(abs(i-j),5))
-#    ion_dict[p] += temp
-
 # calculate multiplicities
+# for each b- and y-ion, calculate the minkowski distance:
+#   the distance between the ion on the spectrum
+#   and the b/y-ion
+# keep count of the number of times each minowski distance appears.
+# the max number of appearances is the maximum multiplicity.
+# do this for each peptide.
 mult = {}
+max_mult = {}
 for p in peptides:
-    mult[p] = 0
-    for ion in diff:
-        if round(ion,5) in ion_dict[p]:
-            mult[p] += 1
+    mult[p] = {}
+    for ion in spec:
+        for j in ion_dict[p]:
+            distance = round(ion - j,4)
+            if distance not in mult[p]:
+                mult[p][distance] = 1
+            else:
+                mult[p][distance] += 1
+    max_mult[p] = max(mult[p].values())
 
-max_mult = {"x":0}
-for p in mult:
-    if mult[p] > list(max_mult.values())[0]:
-        max_mult = {p:mult[p]}
+# report the peptide with the maximum multiplicity out of all peptides
+answer_m = 0
+answer_p = ""
+for p in max_mult:
+    if max_mult[p] > answer_m:
+        answer_m = max_mult[p]
+        answer_p = p
 
-for k,v in max_mult.items():
-    print(v)
-    print(k)
+print(answer_m)
+print(answer_p)
