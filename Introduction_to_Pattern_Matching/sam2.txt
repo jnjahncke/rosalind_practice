@@ -1,5 +1,0 @@
-apple
-apropos
-banana
-bandana
-orange
