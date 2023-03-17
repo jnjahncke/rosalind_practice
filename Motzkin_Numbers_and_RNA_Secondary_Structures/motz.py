@@ -13,8 +13,8 @@ def count_noncrossing_matchings(rna):
         s = 0
         for k in range(1, i):
             if (rna[k-1], rna[i-1]) in [('A', 'U'), ('U', 'A'), ('C', 'G'), ('G', 'C')]:
-                s = (s + m[k-1] * m[i-k-1]) % MOD
-        m[i] = (m[i-1] + s) % MOD
+                s = (s + m[k-1] * m[i-k-1])
+        m[i] = (m[i-1] + s)
     return m[n]
 
 
@@ -27,4 +27,4 @@ with open(sys.argv[1],"r") as fasta:
             rna += line
 
 # Count the noncrossing matchings and print the result modulo 1,000,000
-print(count_noncrossing_matchings(rna))
+print(count_noncrossing_matchings(rna) % MOD)
