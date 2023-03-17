@@ -2,21 +2,23 @@
 
 import sys
 
-MOD = 1000000
+memo = {}
+def motz(seq):
+    if len(seq) == 0 or len(seq) == 1:
+        return 1
 
-def count_noncrossing_matchings(rna):
-    n = len(rna)
-    # Initialize the Motzkin numbers
-    m = [1, 1] + [0] * (n - 1)
-    # Compute the Motzkin numbers using the recurrence relation
-    for i in range(2, n + 1):
-        s = 0
-        for k in range(1, i):
-            if (rna[k-1], rna[i-1]) in [('A', 'U'), ('U', 'A'), ('C', 'G'), ('G', 'C')]:
-                s = (s + m[k-1] * m[i-k-1])
-        m[i] = (m[i-1] + s)
-    return m[n]
+    if seq in memo:
+        return memo[seq]
 
+    memo[seq] = motz(seq[1:])
+    for i in range(1, len(seq)):
+        if ((seq[0] == 'A' and seq[i] == 'U') or
+            (seq[0] == 'U' and seq[i] == 'A') or
+            (seq[0] == 'C' and seq[i] == 'G') or
+            (seq[0] == 'G' and seq[i] == 'C')):
+            memo[seq] += motz(seq[1:i]) * motz(seq[i+1:])
+            memo[seq] %= 10**6
+    return memo[seq]
 
 # Read the input RNA string from a file
 rna = ""
@@ -27,4 +29,4 @@ with open(sys.argv[1],"r") as fasta:
             rna += line
 
 # Count the noncrossing matchings and print the result modulo 1,000,000
-print(count_noncrossing_matchings(rna) % MOD)
+print(motz(rna))
